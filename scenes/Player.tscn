@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=3 uid="uid://cwi2pt5cwbypk"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_hekuk"]
+[ext_resource type="Texture2D" uid="uid://65hp0lqst0f5" path="res://sprites/player/running/1.png" id="3_bvo0i"]
+[ext_resource type="Texture2D" uid="uid://bpjdfhbsc5omu" path="res://sprites/player/running/2.png" id="4_0wepn"]
+[ext_resource type="Texture2D" uid="uid://bimfpl41jepuy" path="res://sprites/lantern/uniform_light.png" id="4_6dtxf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_frlvm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"crouching",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"jumping",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_bvo0i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_0wepn")
+}],
+"loop": true,
+"name": &"running",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bpbe2"]
+size = Vector2(10, 10)
+
+[node name="Player" type="RigidBody2D" groups=["players"]]
+lock_rotation = true
+linear_damp = 5.0
+angular_damp = 2.0
+script = ExtResource("1_hekuk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_frlvm")
+animation = &"running"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_bpbe2")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)
+position_smoothing_enabled = true
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_bpbe2")
+
+[node name="Lantern" type="PointLight2D" parent="."]
+scale = Vector2(0.5, 0.5)
+shadow_enabled = true
+texture = ExtResource("4_6dtxf")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

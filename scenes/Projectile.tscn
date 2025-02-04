@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://cl2chqle5oqdh"]
+
+[ext_resource type="Texture2D" uid="uid://ca1c5oi0gg1ty" path="res://sprites/enemy/p1.png" id="1_6pxod"]
+[ext_resource type="Script" path="res://scripts/projectile.gd" id="1_qk6ik"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k76cx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_6pxod")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bdg1k"]
+size = Vector2(5, 1)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_chou7"]
+polygon = PackedVector2Array(-2.5, 0.5, 2.5, 0.5, 2.5, -0.5, -2.5, -0.5)
+
+[node name="Projectile" type="RigidBody2D"]
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_qk6ik")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_k76cx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_bdg1k")
+disabled = true
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_bdg1k")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_chou7")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

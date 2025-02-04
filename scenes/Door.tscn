@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://d1j4idq0jv2nj"]
+
+[ext_resource type="Texture2D" uid="uid://ctrh8374sf7cl" path="res://sprites/door/1.png" id="1_0agts"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_puom2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_0agts")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h0wl3"]
+size = Vector2(12, 12)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_xpswh"]
+polygon = PackedVector2Array(-6, 6, 6, 6, 6, -6, -6, -6)
+
+[node name="Door" type="Area2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_puom2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_h0wl3")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_xpswh")

@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://bvg0t2isj071j"]
+
+[ext_resource type="Script" path="res://scripts/moving.gd" id="1_rm57e"]
+[ext_resource type="Texture2D" uid="uid://c3mejk4x2coi5" path="res://sprites/platform/stepped/moving_1.png" id="1_unsbx"]
+[ext_resource type="Texture2D" uid="uid://c472uy8bm8vai" path="res://sprites/platform/unstepped/moving_0.png" id="2_th3me"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yvvii"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_unsbx")
+}],
+"loop": true,
+"name": &"stepped",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_th3me")
+}],
+"loop": true,
+"name": &"unstepped",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c60rx"]
+size = Vector2(30, 3)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_xusbi"]
+polygon = PackedVector2Array(-15, 1.5, 15, 1.5, 15, -1.5, -15, -1.5)
+
+[node name="Moving" type="RigidBody2D" groups=["moving"]]
+lock_rotation = true
+freeze = true
+script = ExtResource("1_rm57e")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_yvvii")
+animation = &"unstepped"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_c60rx")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_c60rx")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_xusbi")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

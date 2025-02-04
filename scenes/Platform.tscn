@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3 uid="uid://dv424eqr7q1km"]
+
+[ext_resource type="Script" path="res://scripts/platform.gd" id="1_qr66s"]
+[ext_resource type="Texture2D" uid="uid://cfcbe6rjtoiag" path="res://sprites/platform/stepped/default_1.png" id="2_k2pxy"]
+[ext_resource type="Texture2D" uid="uid://euj8fr07hlwt" path="res://sprites/platform/unstepped/default_0.png" id="3_4f27r"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vj228"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_k2pxy")
+}],
+"loop": true,
+"name": &"stepped",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_4f27r")
+}],
+"loop": true,
+"name": &"unstepped",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_06lig"]
+size = Vector2(30, 3)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_1yn7r"]
+polygon = PackedVector2Array(-15, 1.5, 15, 1.5, 15, -1.5, -15, -1.5)
+
+[node name="Platform" type="RigidBody2D" groups=["platforms"]]
+gravity_scale = 0.0
+lock_rotation = true
+freeze = true
+script = ExtResource("1_qr66s")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_vj228")
+animation = &"unstepped"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_06lig")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_06lig")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_1yn7r")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

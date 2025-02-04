@@ -1,0 +1,94 @@
+[gd_scene load_steps=18 format=3 uid="uid://cpodmy6bl7hso"]
+
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_qcpf7"]
+[ext_resource type="PackedScene" uid="uid://d1ukhvlle1dxa" path="res://scenes/Floor.tscn" id="2_easc4"]
+[ext_resource type="PackedScene" uid="uid://dv424eqr7q1km" path="res://scenes/Platform.tscn" id="3_3my6k"]
+[ext_resource type="PackedScene" uid="uid://cwi2pt5cwbypk" path="res://scenes/Player.tscn" id="3_uok1c"]
+[ext_resource type="PackedScene" uid="uid://bvg0t2isj071j" path="res://scenes/Moving.tscn" id="5_jr2sl"]
+[ext_resource type="Texture2D" uid="uid://ctrh8374sf7cl" path="res://sprites/door/1.png" id="5_u82a6"]
+[ext_resource type="PackedScene" uid="uid://dakuv8uidaw1f" path="res://scenes/Teleportation.tscn" id="6_gurox"]
+[ext_resource type="PackedScene" uid="uid://bim0fuqmylnmw" path="res://scenes/Cactus.tscn" id="7_ewk1i"]
+[ext_resource type="PackedScene" uid="uid://7wl31vomjt7r" path="res://scenes/Enemy.tscn" id="8_2al67"]
+[ext_resource type="Script" path="res://scripts/healthbar.gd" id="9_rpr8v"]
+[ext_resource type="PackedScene" uid="uid://cl2chqle5oqdh" path="res://scenes/Projectile.tscn" id="9_xij5b"]
+
+[sub_resource type="Gradient" id="Gradient_2yeus"]
+offsets = PackedFloat32Array(0, 0.451613, 0.625806, 0.741935, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.111678, 2.88785e-07, 0.597809, 1, 0, 0.546754, 0.936859, 1, 0.942241, 0.548174, 0.55687, 1, 0.889808, 0.618416, 3.85046e-07, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_x6gwx"]
+gradient = SubResource("Gradient_2yeus")
+width = 1024
+height = 2048
+fill_from = Vector2(1, 0)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_eekxs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_u82a6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qent6"]
+size = Vector2(12, 12)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u53er"]
+bg_color = Color(1, 0.343872, 0.271413, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8dxtp"]
+bg_color = Color(5.58317e-06, 0.719613, 0.340862, 1)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_qcpf7")
+floor_scene = ExtResource("2_easc4")
+player_scene = ExtResource("3_uok1c")
+platform_scene = ExtResource("3_3my6k")
+moving_scene = ExtResource("5_jr2sl")
+teleportation_scene = ExtResource("6_gurox")
+cactus_scene = ExtResource("7_ewk1i")
+enemy_scene = ExtResource("8_2al67")
+projectile_scene = ExtResource("9_xij5b")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -512.0
+offset_top = -1536.0
+offset_right = 512.0
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = SubResource("GradientTexture2D_x6gwx")
+
+[node name="Door" type="Area2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Door"]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_eekxs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door"]
+shape = SubResource("RectangleShape2D_qent6")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer"]
+offset_left = 7.0
+offset_top = 6.0
+offset_right = 145.0
+offset_bottom = 33.0
+theme_override_styles/background = SubResource("StyleBoxFlat_u53er")
+theme_override_styles/fill = SubResource("StyleBoxFlat_8dxtp")
+script = ExtResource("9_rpr8v")
+
+[node name="Sun" type="DirectionalLight2D" parent="."]
+
+[connection signal="body_entered" from="Door" to="." method="_on_door_body_entered"]
+[connection signal="body_exited" from="Door" to="." method="_on_door_body_exited"]

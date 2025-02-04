@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://dakuv8uidaw1f"]
+
+[ext_resource type="Texture2D" uid="uid://d2sxdnvivcwbp" path="res://sprites/platform/stepped/tele_1.png" id="1_3n8qn"]
+[ext_resource type="Script" path="res://scripts/teleportation.gd" id="1_mkrsv"]
+[ext_resource type="Texture2D" uid="uid://cxn0nrkp7b4ia" path="res://sprites/platform/unstepped/tele_0.png" id="2_e50u7"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sd42i"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_3n8qn")
+}],
+"loop": true,
+"name": &"stepped",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_e50u7")
+}],
+"loop": true,
+"name": &"unstepped",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o8opa"]
+size = Vector2(30, 3)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_7lblm"]
+polygon = PackedVector2Array(-15, 1.5, 15, 1.5, 15, -1.5, -15, -1.5)
+
+[node name="Teleportation" type="RigidBody2D" groups=["teleportation"]]
+lock_rotation = true
+freeze = true
+script = ExtResource("1_mkrsv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_sd42i")
+animation = &"unstepped"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_o8opa")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_o8opa")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_7lblm")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

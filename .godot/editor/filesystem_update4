@@ -1,0 +1,14 @@
+res://scenes/Level.tscn
+res://scenes/Cactus.tscn
+res://scenes/Door.tscn
+res://scenes/Enemy.tscn
+res://scenes/Floor.tscn
+res://scenes/Moving.tscn
+res://scenes/Platform.tscn
+res://scenes/Projectile.tscn
+res://scenes/Teleportation.tscn
+res://scripts/projectile.gd
+res://scenes/Player.tscn
+res://scripts/game.gd
+res://game.tscn
+res://scripts/player.gd

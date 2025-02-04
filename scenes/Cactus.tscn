@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://bim0fuqmylnmw"]
+
+[ext_resource type="Script" path="res://scripts/cactus.gd" id="1_05286"]
+[ext_resource type="Texture2D" uid="uid://jl0ux6tw4ljm" path="res://sprites/cactus/1.png" id="2_imrjx"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nnxq6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_imrjx")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g6vf5"]
+size = Vector2(12, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gpb20"]
+size = Vector2(24, 12)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_0qjkf"]
+polygon = PackedVector2Array(-6, 6, 6, 6, 6, -6, -6, -6)
+
+[node name="Cactus" type="RigidBody2D" groups=["platforms"]]
+lock_rotation = true
+freeze = true
+script = ExtResource("1_05286")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_nnxq6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_g6vf5")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_gpb20")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_0qjkf")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

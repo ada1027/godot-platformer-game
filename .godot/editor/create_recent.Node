@@ -1,0 +1,12 @@
+PointLight2D
+DirectionalLight2D
+LightOccluder2D
+OccluderInstance3D
+Area2D
+CollisionShape2D
+CollisionPolygon2D
+AnimatedSprite2D
+RigidBody2D
+ProgressBar
+CanvasLayer
+WorldEnvironment
